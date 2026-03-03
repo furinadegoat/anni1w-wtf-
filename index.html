@@ -2,361 +2,172 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Lam An Binh — Cypherpunk</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<title>8/3 💗</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-
-body{
-  font-family:'JetBrains Mono',monospace;
-  background:#05080f;
-  color:#00ffcc;
-  overflow-x:hidden;
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Segoe UI', cursive;
+  background: linear-gradient(-45deg, #fce4ec, #f3e5f5, #e1bee7, #f8bbd0);
+  background-size: 400% 400%;
+  animation: gradient 12s ease infinite;
 }
 
-/* CRT Scanline */
-body::after{
-  content:"";
-  position:fixed;
-  inset:0;
-  background:linear-gradient(
-    rgba(0,255,204,.04) 1px,
-    transparent 1px
-  );
-  background-size:100% 3px;
-  pointer-events:none;
-  z-index:1;
+@keyframes gradient {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
 }
 
-/* matrix background */
-canvas{
-  position:fixed;
-  inset:0;
-  z-index:0;
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
 
-/* layout */
-.content{
-  position:relative;
-  z-index:2;
-  max-width:900px;
-  margin:auto;
-  padding:90px 20px;
+.envelope {
+  width: 200px;
+  height: 120px;
+  background: #fff;
+  position: relative;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: 0.6s;
 }
 
-/* header */
-h1{
-  text-align:center;
-  font-size:56px;
-  letter-spacing:4px;
-  margin-bottom:12px;
+.envelope:before {
+  content: "";
+  position: absolute;
+  top: -60px;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 100px solid transparent;
+  border-right: 100px solid transparent;
+  border-bottom: 60px solid #fff;
+  transition: 0.6s;
 }
 
-/* glitch */
-.glitch{
-  position:relative;
-  display:inline-block;
-  text-shadow:0 0 20px #00ffcc;
-}
-.glitch::before,
-.glitch::after{
-  content:attr(data-text);
-  position:absolute;
-  inset:0;
-  opacity:.75;
-}
-.glitch::before{
-  color:#ff00ff;
-  animation:gl1 2s infinite linear;
-}
-.glitch::after{
-  color:#00ffff;
-  animation:gl2 1.5s infinite linear;
-}
-@keyframes gl1{
-  0%{clip-path:inset(0 0 85% 0)}
-  50%{clip-path:inset(40% 0 30% 0)}
-  100%{clip-path:inset(0 0 85% 0)}
-}
-@keyframes gl2{
-  0%{clip-path:inset(80% 0 0 0)}
-  50%{clip-path:inset(50% 0 20% 0)}
-  100%{clip-path:inset(80% 0 0 0)}
+.envelope.open:before {
+  transform: rotateX(180deg);
+  transform-origin: top;
 }
 
-.subtitle{
-  text-align:center;
-  opacity:.7;
-  margin-bottom:80px;
+.message {
+  opacity: 0;
+  transition: 1s;
+  margin-top: 20px;
+  font-size: 20px;
+  color: #6a1b9a;
 }
 
-/* section */
-section{
-  background:rgba(0,0,0,.65);
-  border:1px solid rgba(0,255,204,.25);
-  border-radius:12px;
-  padding:30px;
-  margin-bottom:40px;
-  box-shadow:0 0 30px rgba(0,255,204,.05);
-  opacity:0;
-  transform:translateY(40px);
-  transition:all .8s ease;
-}
-section.visible{
-  opacity:1;
-  transform:translateY(0);
-}
-section:hover{
-  transform:translateY(-6px);
-  box-shadow:0 0 40px rgba(0,255,204,.15);
+.show {
+  opacity: 1;
 }
 
-section h2{
-  letter-spacing:3px;
-  margin-bottom:20px;
+.flower {
+  position: absolute;
+  top: -20px;
+  color: pink;
+  font-size: 20px;
+  animation: fall linear infinite;
 }
 
-.quote{
-  font-style:italic;
-  line-height:2;
-  border-left:3px solid rgba(0,255,204,.5);
-  padding-left:22px;
+@keyframes fall {
+  to {
+    transform: translateY(100vh);
+  }
 }
 
-ul{padding-left:20px}
-li{margin-bottom:6px}
-
-.decor{
-  text-align:center;
-  opacity:.35;
-  letter-spacing:4px;
-  margin:40px 0;
-  font-size:14px;
+.heart {
+  position: absolute;
+  color: #e91e63;
+  animation: pop 1s forwards;
 }
 
-a{
-  color:#00ffcc;
-  text-decoration:none;
-}
-a:hover{
-  text-shadow:0 0 10px #00ffcc;
-}
-
-footer{
-  text-align:center;
-  margin-top:80px;
-  font-size:13px;
-  opacity:.6;
-}
-
-/* TERMINAL */
-#terminalOverlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.97);
-  display:none;
-  z-index:999;
-  color:#00ffcc;
-}
-#terminalWindow{
-  max-width:900px;
-  margin:80px auto;
-}
-#terminalOutput{
-  min-height:300px;
-  white-space:pre-line;
-  margin-bottom:10px;
-}
-.inputLine{
-  display:flex;
-  gap:10px;
-}
-#terminalInput{
-  flex:1;
-  background:transparent;
-  border:none;
-  outline:none;
-  color:#00ffcc;
-  font-family:inherit;
-  font-size:16px;
+@keyframes pop {
+  0% {opacity:1; transform: scale(1);}
+  100% {opacity:0; transform: scale(2) translateY(-50px);}
 }
 </style>
 </head>
+
 <body>
 
-<canvas id="matrix"></canvas>
-
-<div class="content">
-
-  <h1>
-    <span class="glitch" data-text="LAM AN BINH">LAM AN BINH</span>
-  </h1>
-  <p class="subtitle">hevuong · nguoinhon · adunguoinhon</p>
-
-  <section>
-    <h2>IDENTITY</h2>
-    <p>
-      Học Sinh Chuyên Tin HSGS<br>
-      Culi tại dự án HSGS-Code Camp Hè 2025 Tại HUS<br>
-      Trưởng site Archimedes tại dự án HSGS-Code Camp Xuân 2026
-    </p>
-  </section>
-
-  <div class="decor">▓▒░ archimedes // system online ░▒▓</div>
-
-  <section>
-    <h2>QUOTE</h2>
-    <div class="quote">
-      anh không tự cho rằng bản thân mình là một<br>
-      <b>vị TRIẾT GIA RÀNH ĐỜI</b><br><br>
-      suy nghĩ người ta cũng giống như anh chỉ là họ không<br>
-      <b>VIẾT RA THÀNH LỜI</b>
-    </div>
-  </section>
-
-  <div class="decor">† encrypted mind · free soul †</div>
-
-  <section>
-    <h2>GAME</h2>
-    <p>
-      In-Game AOV: <b>&nbsp;</b><br>
-      In-Game FC Online (FCO): <b>HSGSxBinhLam</b><br>
-      UID Genshin Impact: <b>841096833</b>
-    </p>
-  </section>
-
-  <section id="contact">
-    <h2>CONTACT</h2>
-    <p>
-      Facebook:
-      <a href="https://www.facebook.com/anbinh.lam.73/" target="_blank">Lam Binh</a><br>
-      Instagram:
-      <a href="https://www.instagram.com/adunguoinhon/" target="_blank">@adunguoinhon</a><br>
-      Discord: <b>adunguoinhon</b>
-    </p>
-  </section>
-
-  <footer>
-    © 2026 · encrypted mind · free soul
-  </footer>
-
-</div>
-
-<!-- TERMINAL -->
-<div id="terminalOverlay">
-  <div id="terminalWindow">
-    <div id="terminalOutput"></div>
-    <div class="inputLine">
-      <span>$</span>
-      <input id="terminalInput" autocomplete="off"/>
-    </div>
-  </div>
+<div class="center">
+  <div class="envelope" onclick="openLetter()"></div>
+  <div class="message" id="text"></div>
 </div>
 
 <script>
-/* MATRIX */
-const c=document.getElementById("matrix");
-const ctx=c.getContext("2d");
-function resize(){c.width=innerWidth;c.height=innerHeight}
-resize();
-addEventListener("resize",resize);
-
-const chars="01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%^&*";
-const size=14;
-let cols=Math.floor(c.width/size);
-let drops=Array(cols).fill(1);
-
-function draw(){
-  ctx.fillStyle="rgba(0,0,0,0.06)";
-  ctx.fillRect(0,0,c.width,c.height);
-  ctx.fillStyle="#00ffcc";
-  ctx.shadowBlur=10;
-  ctx.shadowColor="#00ffcc";
-  ctx.font=size+"px monospace";
-  for(let i=0;i<drops.length;i++){
-    const t=chars[Math.random()*chars.length|0];
-    ctx.fillText(t,i*size,drops[i]*size);
-    if(drops[i]*size>c.height && Math.random()>0.97) drops[i]=0;
-    drops[i]++;
-  }
+// ====== Hoa rơi ======
+function createFlower() {
+  const flower = document.createElement("div");
+  flower.classList.add("flower");
+  flower.innerHTML = "🌸";
+  flower.style.left = Math.random() * 100 + "vw";
+  flower.style.animationDuration = (Math.random() * 5 + 5) + "s";
+  document.body.appendChild(flower);
+  setTimeout(() => flower.remove(), 10000);
 }
-setInterval(draw,50);
+setInterval(createFlower, 300);
 
-/* FADE IN */
-const sections=document.querySelectorAll("section");
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting) e.target.classList.add("visible");
-  });
-},{threshold:.2});
-sections.forEach(s=>obs.observe(s));
+// ====== Mở thư + chữ gõ ======
+const lines = [
+  "Chúc em 8/3 thật dịu dàng 🌷",
+  "Cảm ơn vì đã xuất hiện trong cuộc sống anh.",
+  "Anh không có ảnh chung để khoe.",
+  "Nhưng anh có những khoảnh khắc nghĩ về em.",
+  "Và nếu được phép...",
+  "Anh muốn là người làm em hạnh phúc 💗"
+];
 
-/* TERMINAL */
-const btn=document.createElement("div");
-btn.innerHTML="> ENTER TERMINAL MODE";
-btn.style.textAlign="center";
-btn.style.marginTop="40px";
-btn.style.cursor="pointer";
-btn.style.opacity=".6";
-btn.style.letterSpacing="3px";
-document.querySelector(".content").appendChild(btn);
-
-const overlay=document.getElementById("terminalOverlay");
-const output=document.getElementById("terminalOutput");
-const input=document.getElementById("terminalInput");
-
-btn.onclick=()=>{
-  overlay.style.display="block";
-  input.focus();
-  print("Terminal Activated...\nType 'help' to see commands.\n");
-};
-
-overlay.onclick=e=>{
-  if(e.target===overlay){overlay.style.display="none";output.innerHTML="";}
-};
-
-function print(t){output.innerHTML+=t+"\n";}
-
-const commands={
-  help:"whoami\nidentity\nquote\nskills\nclear\nexit",
-  whoami:"Lam An Binh\nHSGS · Archimedes · Cypherpunk Mind",
-  identity:"Học Sinh Chuyên Tin HSGS\nCode Camp Hè 2025\nArchimedes Xuân 2026",
-  quote:"anh không tự cho rằng bản thân mình là một vị TRIẾT GIA RÀNH ĐỜI...",
-  skills:"C++ ████████████ 95%\nGraph ███████████ 90%\nSegment Tree ██████████ 85%\nAI ████ 40%",
-  clear:"__clear__",
-  exit:"__exit__"
-};
-
-input.addEventListener("keydown",e=>{
-  if(e.key==="Enter"){
-    const val=input.value.trim();
-    print("$ "+val);
-    if(commands[val]){
-      if(commands[val]==="__clear__") output.innerHTML="";
-      else if(commands[val]==="__exit__"){overlay.style.display="none";output.innerHTML="";}
-      else print(commands[val]);
-    } else print("Command not found.");
-    input.value="";
+function typeEffect(element, text, speed, callback) {
+  let i = 0;
+  function typing() {
+    if (i < text.length) {
+      element.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typing, speed);
+    } else if (callback) {
+      setTimeout(callback, 800);
+    }
   }
-});
+  typing();
+}
 
-/* EASTER EGG */
-let keyBuffer="";
-document.addEventListener("keydown",e=>{
-  keyBuffer+=e.key.toLowerCase();
-  if(keyBuffer.includes("archimedes")){
-    document.body.style.background="#150000";
-    document.body.style.color="#ff0033";
-    setTimeout(()=>{
-      document.body.style.background="#05080f";
-      document.body.style.color="#00ffcc";
-    },2000);
-    keyBuffer="";
+function openLetter() {
+  document.querySelector(".envelope").classList.add("open");
+  const textDiv = document.getElementById("text");
+  textDiv.classList.add("show");
+  textDiv.innerHTML = "";
+  let i = 0;
+  function nextLine() {
+    if (i < lines.length) {
+      const p = document.createElement("p");
+      textDiv.appendChild(p);
+      typeEffect(p, lines[i], 40, () => {
+        i++;
+        nextLine();
+      });
+    }
   }
+  nextLine();
+}
+
+// ====== Click nổ tim ======
+document.addEventListener("click", function(e){
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML = "💗";
+  heart.style.left = e.clientX + "px";
+  heart.style.top = e.clientY + "px";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 1000);
 });
 </script>
 
