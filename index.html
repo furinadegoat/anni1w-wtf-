@@ -3,177 +3,206 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>8/3</title>
-
+<title>8/3 Pink Cinematic</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{overflow:hidden;font-family:sans-serif;background:black;color:white}
 
-/* ===== SCENES ===== */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body{
+    overflow:hidden;
+    background:black;
+    color:white;
+}
+
+/* ===== SCENE CHUNG ===== */
 .scene{
-  position:absolute;
-  width:100%;
-  height:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
+    position:absolute;
+    width:100%;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    opacity:0;
+    transition:opacity 1s ease;
 }
 
+.active{
+    opacity:1;
+    z-index:1;
+}
+
+/* ===== SCENE 1 ===== */
 #scene1{
-  background:radial-gradient(circle,#ff4da6,#b30059);
-  font-size:40px;
-  letter-spacing:5px;
+    background: radial-gradient(circle at center,
+      #ff66b2 0%,
+      #ff1a8c 40%,
+      #cc0066 70%,
+      #1a0010 100%);
 }
 
+.title{
+    font-size:60px;
+    text-shadow:
+      0 0 10px #ff99cc,
+      0 0 20px #ff4da6,
+      0 0 40px #ff0066;
+}
+
+/* ===== SCENE 2 ===== */
 #scene2{
-  background:radial-gradient(circle at center,#ff99cc,#660033);
-  opacity:0;
-  transition:1s;
+    background: radial-gradient(circle at center,
+      #ff4da6 0%,
+      #99004d 60%,
+      #0d001a 100%);
 }
 
+/* ===== SCENE 3 ===== */
 #scene3{
-  background:black;
-  opacity:0;
-  transition:1s;
+    background: radial-gradient(circle at center,
+      #ff99cc 0%,
+      #cc0066 60%,
+      #1a0010 100%);
 }
 
-/* ===== BURST EFFECT ===== */
-#burst{
-  position:absolute;
-  width:0;
-  height:0;
-  border-radius:50%;
-  background:#ff4da6;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  z-index:10;
+/* ===== PARTICLES ===== */
+.particle{
+    position:absolute;
+    width:4px;
+    height:4px;
+    background:#ff99cc;
+    border-radius:50%;
+    animation:float 10s linear infinite;
 }
 
-/* ===== HEART CANVAS ===== */
-canvas{position:absolute;top:0;left:0}
-
-#finalText{
-  position:absolute;
-  bottom:20%;
-  font-size:32px;
-  text-align:center;
-  opacity:0;
-  transition:2s;
+@keyframes float{
+    from{ transform:translateY(100vh); opacity:0;}
+    to{ transform:translateY(-10vh); opacity:1;}
 }
+
+/* ===== HEART ===== */
+.heart{
+    width:150px;
+    height:150px;
+    position:relative;
+    transform:rotate(-45deg);
+    animation:beat 1s infinite;
+}
+
+.heart:before,
+.heart:after{
+    content:"";
+    position:absolute;
+    width:150px;
+    height:150px;
+    background:#ff4da6;
+    border-radius:50%;
+    box-shadow:0 0 40px #ff0066;
+}
+
+.heart:before{
+    top:-75px;
+    left:0;
+}
+
+.heart:after{
+    left:75px;
+    top:0;
+}
+
+@keyframes beat{
+    0%,100%{transform:rotate(-45deg) scale(1);}
+    50%{transform:rotate(-45deg) scale(1.1);}
+}
+
+/* ===== RADIAL BURST TRANSITION ===== */
+.burst{
+    position:fixed;
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    background: radial-gradient(circle,
+      #ff99cc 0%,
+      #ff0066 40%,
+      #33001a 80%);
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) scale(0);
+    z-index:999;
+    pointer-events:none;
+}
+
+.expand{
+    animation:expand 1s forwards;
+}
+
+@keyframes expand{
+    to{
+        transform:translate(-50%,-50%) scale(20);
+    }
+}
+
+.text{
+    margin-top:30px;
+    font-size:22px;
+    text-align:center;
+    max-width:80%;
+    text-shadow:0 0 20px #ff4da6;
+}
+
 </style>
 </head>
-
 <body>
 
-<div id="scene1" class="scene">
-  8.3.2026
+<div class="scene active" id="scene1">
+    <div class="title">8.3.2026</div>
 </div>
 
-<div id="burst"></div>
-
-<div id="scene2" class="scene">
-  <canvas id="stars"></canvas>
-  <h1 style="font-size:36px;">Trong hàng tỷ người trên thế giới...</h1>
+<div class="scene" id="scene2">
+    <div class="text">Trong hàng tỷ người trên thế giới...</div>
 </div>
 
-<div id="scene3" class="scene">
-  <canvas id="heartCanvas"></canvas>
-  <div id="finalText">
-    Nhưng hôm nay, thế giới chọn em 💖<br>
-    Chúc em 8/3 thật hạnh phúc.
-  </div>
+<div class="scene" id="scene3">
+    <div class="heart"></div>
+    <div class="text">
+        Nhưng hôm nay, thế giới chọn em.<br>
+        Chúc em 8/3 thật hạnh phúc 💖
+    </div>
 </div>
+
+<div class="burst" id="burst"></div>
 
 <script>
-/* ===== SCENE TRANSITION ===== */
-setTimeout(()=>{
-  const burst=document.getElementById("burst");
-  burst.style.width="200vmax";
-  burst.style.height="200vmax";
-  burst.style.transition="1s ease-out";
 
-  setTimeout(()=>{
-    document.getElementById("scene1").style.display="none";
-    document.getElementById("scene2").style.opacity=1;
-  },900);
-},2000);
+const scenes = document.querySelectorAll(".scene");
+const burst = document.getElementById("burst");
 
-/* ===== SCENE 2 AUTO TO SCENE 3 ===== */
-setTimeout(()=>{
-  document.getElementById("scene2").style.opacity=0;
-  setTimeout(()=>{
-    document.getElementById("scene2").style.display="none";
-    document.getElementById("scene3").style.opacity=1;
-    startHeart();
-  },1000);
-},6000);
-
-/* ===== PINK PARTICLES ===== */
-const canvas=document.getElementById("stars");
-const ctx=canvas.getContext("2d");
-canvas.width=innerWidth;
-canvas.height=innerHeight;
-let stars=[];
-for(let i=0;i<150;i++){
-  stars.push({
-    x:Math.random()*canvas.width,
-    y:Math.random()*canvas.height,
-    r:Math.random()*2
-  });
+function transition(nextIndex){
+    burst.classList.add("expand");
+    setTimeout(()=>{
+        scenes.forEach(s=>s.classList.remove("active"));
+        scenes[nextIndex].classList.add("active");
+        burst.classList.remove("expand");
+    },1000);
 }
-function drawStars(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle="#ff4da6";
-  stars.forEach(s=>{
-    ctx.beginPath();
-    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fill();
-  });
-  requestAnimationFrame(drawStars);
+
+setTimeout(()=> transition(1), 2500);
+setTimeout(()=> transition(2), 6000);
+
+/* PARTICLES */
+for(let i=0;i<40;i++){
+    let p = document.createElement("div");
+    p.classList.add("particle");
+    p.style.left = Math.random()*100+"vw";
+    p.style.animationDuration = (5+Math.random()*5)+"s";
+    document.body.appendChild(p);
 }
-drawStars();
 
-/* ===== HEART FORMATION ===== */
-function startHeart(){
-  const c=document.getElementById("heartCanvas");
-  const hctx=c.getContext("2d");
-  c.width=innerWidth;
-  c.height=innerHeight;
-
-  let points=[];
-  for(let t=0;t<Math.PI*2;t+=0.05){
-    let x=16*Math.pow(Math.sin(t),3);
-    let y=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
-    points.push({
-      x:c.width/2+x*20,
-      y:c.height/2-y*20
-    });
-  }
-
-  let scale=1;
-  function drawHeart(){
-    hctx.clearRect(0,0,c.width,c.height);
-    hctx.fillStyle="#ff4da6";
-    hctx.shadowColor="#ff4da6";
-    hctx.shadowBlur=30;
-
-    points.forEach(p=>{
-      hctx.beginPath();
-      hctx.arc(p.x,p.y,3*scale,0,Math.PI*2);
-      hctx.fill();
-    });
-
-    scale=1+0.1*Math.sin(Date.now()/300);
-    requestAnimationFrame(drawHeart);
-  }
-  drawHeart();
-
-  setTimeout(()=>{
-    document.getElementById("finalText").style.opacity=1;
-  },2000);
-}
 </script>
 
 </body>
