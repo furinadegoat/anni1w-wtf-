@@ -3,206 +3,180 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>8/3 Pink Cinematic</title>
+<title>7 Ngày Có Khánh Linh</title>
+
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family: 'Segoe UI', sans-serif;
-}
-
 body{
-    overflow:hidden;
-    background:black;
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at top, #1f1f3d, #0f0f1f);
     color:white;
+    text-align:center;
+    overflow-x:hidden;
 }
 
-/* ===== SCENE CHUNG ===== */
-.scene{
-    position:absolute;
-    width:100%;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
+/* nền sao nhẹ */
+body::before{
+    content:"";
+    position:fixed;
+    width:200%;
+    height:200%;
+    background-image:radial-gradient(white 1px, transparent 1px);
+    background-size:40px 40px;
+    opacity:0.05;
+    animation:moveBg 80s linear infinite;
+}
+@keyframes moveBg{
+    from{transform:translate(0,0);}
+    to{transform:translate(-600px,-600px);}
+}
+
+h1{
+    margin-top:100px;
+    font-size:2.8rem;
+}
+
+.typing{
+    border-right:3px solid #ff6bd6;
+    display:inline-block;
+    white-space:nowrap;
+    overflow:hidden;
+    animation:typing 4s steps(40,end), blink .8s infinite;
+}
+
+@keyframes typing{
+    from{width:0}
+    to{width:100%}
+}
+
+@keyframes blink{
+    50%{border-color:transparent}
+}
+
+.section{
+    margin-top:120px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:25px;
+    padding:40px;
+}
+
+.card{
+    background:rgba(255,255,255,0.05);
+    padding:25px;
+    border-radius:25px;
+    backdrop-filter:blur(10px);
     opacity:0;
-    transition:opacity 1s ease;
+    transform:translateY(30px);
+    transition:0.6s;
 }
 
-.active{
+.card.show{
     opacity:1;
-    z-index:1;
+    transform:translateY(0);
 }
 
-/* ===== SCENE 1 ===== */
-#scene1{
-    background: radial-gradient(circle at center,
-      #ff66b2 0%,
-      #ff1a8c 40%,
-      #cc0066 70%,
-      #1a0010 100%);
+.card:hover{
+    background:rgba(255,107,214,0.15);
+    box-shadow:0 0 20px rgba(255,107,214,0.4);
 }
 
-.title{
-    font-size:60px;
-    text-shadow:
-      0 0 10px #ff99cc,
-      0 0 20px #ff4da6,
-      0 0 40px #ff0066;
+button{
+    margin-top:60px;
+    padding:16px 35px;
+    border:none;
+    border-radius:30px;
+    background:#ff4ecb;
+    color:white;
+    font-size:1rem;
+    cursor:pointer;
+    animation:pulse 2s infinite;
+    transition:0.3s;
 }
 
-/* ===== SCENE 2 ===== */
-#scene2{
-    background: radial-gradient(circle at center,
-      #ff4da6 0%,
-      #99004d 60%,
-      #0d001a 100%);
+@keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(255,78,203,0.6);}
+    70%{box-shadow:0 0 0 20px rgba(255,78,203,0);}
+    100%{box-shadow:0 0 0 0 rgba(255,78,203,0);}
 }
 
-/* ===== SCENE 3 ===== */
-#scene3{
-    background: radial-gradient(circle at center,
-      #ff99cc 0%,
-      #cc0066 60%,
-      #1a0010 100%);
+#hiddenMessage{
+    margin-top:40px;
+    font-size:1.4rem;
+    color:#ffb6f9;
+    display:none;
 }
 
-/* ===== PARTICLES ===== */
-.particle{
-    position:absolute;
-    width:4px;
-    height:4px;
-    background:#ff99cc;
-    border-radius:50%;
-    animation:float 10s linear infinite;
+/* tim bay */
+.heart{
+    position:fixed;
+    color:#ff4ecb;
+    animation:float 3s linear forwards;
 }
 
 @keyframes float{
-    from{ transform:translateY(100vh); opacity:0;}
-    to{ transform:translateY(-10vh); opacity:1;}
+    0%{transform:translateY(0); opacity:1;}
+    100%{transform:translateY(-600px); opacity:0;}
 }
-
-/* ===== HEART ===== */
-.heart{
-    width:150px;
-    height:150px;
-    position:relative;
-    transform:rotate(-45deg);
-    animation:beat 1s infinite;
-}
-
-.heart:before,
-.heart:after{
-    content:"";
-    position:absolute;
-    width:150px;
-    height:150px;
-    background:#ff4da6;
-    border-radius:50%;
-    box-shadow:0 0 40px #ff0066;
-}
-
-.heart:before{
-    top:-75px;
-    left:0;
-}
-
-.heart:after{
-    left:75px;
-    top:0;
-}
-
-@keyframes beat{
-    0%,100%{transform:rotate(-45deg) scale(1);}
-    50%{transform:rotate(-45deg) scale(1.1);}
-}
-
-/* ===== RADIAL BURST TRANSITION ===== */
-.burst{
-    position:fixed;
-    width:100px;
-    height:100px;
-    border-radius:50%;
-    background: radial-gradient(circle,
-      #ff99cc 0%,
-      #ff0066 40%,
-      #33001a 80%);
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%) scale(0);
-    z-index:999;
-    pointer-events:none;
-}
-
-.expand{
-    animation:expand 1s forwards;
-}
-
-@keyframes expand{
-    to{
-        transform:translate(-50%,-50%) scale(20);
-    }
-}
-
-.text{
-    margin-top:30px;
-    font-size:22px;
-    text-align:center;
-    max-width:80%;
-    text-shadow:0 0 20px #ff4da6;
-}
-
 </style>
 </head>
+
 <body>
 
-<div class="scene active" id="scene1">
-    <div class="title">8.3.2026</div>
-</div>
+<h1><span class="typing">7 ngày có Khánh Linh ✨</span></h1>
+<p style="color:#ffb6f9">Và mình đã quen với việc mỗi ngày đều có cậu.</p>
 
-<div class="scene" id="scene2">
-    <div class="text">Trong hàng tỷ người trên thế giới...</div>
-</div>
-
-<div class="scene" id="scene3">
-    <div class="heart"></div>
-    <div class="text">
-        Nhưng hôm nay, thế giới chọn em.<br>
-        Chúc em 8/3 thật hạnh phúc 💖
+<div class="section">
+    <h2>7 điều mình thích ở Khánh Linh</h2>
+    <div class="cards">
+        <div class="card">Cách cậu lắng nghe mình nói, dù là chuyện nhỏ xíu.</div>
+        <div class="card">Những lúc cậu suy nghĩ nhiều nhưng vẫn cố tỏ ra bình thường.</div>
+        <div class="card">Cách cậu làm những điều giản đơn trở nên đặc biệt.</div>
+        <div class="card">Sự dịu dàng rất riêng mà không phải ai cũng thấy.</div>
+        <div class="card">Năng lượng vừa nhẹ nhàng vừa khó đoán của cậu.</div>
+        <div class="card">Cảm giác an toàn khi ở cạnh Khánh Linh.</div>
+        <div class="card">Và đơn giản là… vì đó là Khánh Linh.</div>
     </div>
 </div>
 
-<div class="burst" id="burst"></div>
+<button onclick="showMessage()">Nếu Khánh Linh là của mình 💗</button>
+
+<div id="hiddenMessage">
+    Cảm ơn vì 7 ngày vừa rồi.  
+    Mình mong sẽ còn rất nhiều lần "7 ngày" như thế nữa, cùng Khánh Linh. ✨
+</div>
 
 <script>
+const cards=document.querySelectorAll('.card');
 
-const scenes = document.querySelectorAll(".scene");
-const burst = document.getElementById("burst");
+window.addEventListener('scroll',()=>{
+    cards.forEach(card=>{
+        const rect=card.getBoundingClientRect();
+        if(rect.top<window.innerHeight-50){
+            card.classList.add('show');
+        }
+    });
+});
 
-function transition(nextIndex){
-    burst.classList.add("expand");
-    setTimeout(()=>{
-        scenes.forEach(s=>s.classList.remove("active"));
-        scenes[nextIndex].classList.add("active");
-        burst.classList.remove("expand");
-    },1000);
+function showMessage(){
+    document.getElementById("hiddenMessage").style.display="block";
+    createHearts();
 }
 
-setTimeout(()=> transition(1), 2500);
-setTimeout(()=> transition(2), 6000);
-
-/* PARTICLES */
-for(let i=0;i<40;i++){
-    let p = document.createElement("div");
-    p.classList.add("particle");
-    p.style.left = Math.random()*100+"vw";
-    p.style.animationDuration = (5+Math.random()*5)+"s";
-    document.body.appendChild(p);
+function createHearts(){
+    for(let i=0;i<15;i++){
+        let heart=document.createElement("div");
+        heart.innerHTML="❤";
+        heart.classList.add("heart");
+        heart.style.left=Math.random()*100+"vw";
+        heart.style.fontSize=(Math.random()*20+10)+"px";
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(),3000);
+    }
 }
-
 </script>
 
 </body>
